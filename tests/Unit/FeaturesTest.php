@@ -77,28 +77,30 @@ class FeaturesTest extends TestCase
     }
 
     #[Test]
-    public function featuresWithSameIdInSameStackThrowException()
+    public function aStackedFeatureCanHaveNestedFeatureWithoutIdCollision()
     {
-        // This tests that when two features end up with the same ID in the same stack,
-        // an exception is thrown (as IDs must be unique)
-        $this->expectException(LanternException::class);
-        $this->expectExceptionMessage('Feature already declared with this ID (identity)');
-
+        // Before the fix, "Identity" and "IdentityFeatures" would both have ID 'identity'
+        // after stripping the "Features" suffix, causing a collision.
+        // Now that we don't strip suffixes, they have different IDs and work fine.
         Lantern::setUp(Identity::class);
+
+        // The action from the nested feature should be available
+        $this->assertTrue(IdentityAction::make()->available());
+
+        // Verify both features are registered
+        $features = FeatureRegistry::featuresForAction(new IdentityAction);
+        $this->assertCount(2, $features);
     }
 
     #[Test]
-    public function aStackedFeatureCanHaveNestedFeatureWithExplicitDifferentId()
+    public function featuresWithExplicitSameIdInSameStackThrowException()
     {
-        // This tests the fix: explicitly set a different ID to avoid conflicts
-        Lantern::setUp(IdentityWithExplicitId::class);
+        // This tests that when two features explicitly set the same ID in the same stack,
+        // an exception is thrown (as IDs must be unique)
+        $this->expectException(LanternException::class);
+        $this->expectExceptionMessage('Feature already declared with this ID (duplicate-id)');
 
-        // The action from the nested feature should be available
-        $this->assertTrue(IdentityAction2::make()->available());
-
-        // Verify both features are registered
-        $features = FeatureRegistry::featuresForAction(new IdentityAction2);
-        $this->assertCount(2, $features);
+        Lantern::setUp(ParentWithDuplicateId::class);
     }
 }
 
@@ -166,12 +168,9 @@ class IdentityAction extends Action
     const GUEST_USERS = true;
 }
 
-class IdentityAction2 extends Action
-{
-    const GUEST_USERS = true;
-}
-
-// This class name will have "Features" stripped, resulting in ID = 'identity'
+// Now that we don't strip "Features" suffix, these have different IDs:
+// - Identity -> 'identity'
+// - IdentityFeatures -> 'identity-features'
 class IdentityFeatures extends Feature
 {
     const ACTIONS = [
@@ -179,19 +178,6 @@ class IdentityFeatures extends Feature
     ];
 }
 
-// This class name will have "Features" stripped, resulting in ID = 'identity'
-// But we explicitly set a different ID to avoid conflict
-class IdentityFeaturesWithExplicitId extends Feature
-{
-    const ID = 'identity-features'; // Explicitly different ID
-
-    const ACTIONS = [
-        IdentityAction2::class,
-    ];
-}
-
-// This class name "Identity" (no Feature/Features suffix) will have ID = 'identity'
-// Combined with STACK = 'identity', both features end up with same ID in same stack
 class Identity extends Feature
 {
     const STACK = 'identity';
@@ -201,12 +187,16 @@ class Identity extends Feature
     ];
 }
 
-// Fixed version with explicit ID on nested feature
-class IdentityWithExplicitId extends Feature
+// Test classes for explicit duplicate ID scenario
+class ChildWithDuplicateId extends Feature
 {
-    const STACK = 'identity';
+    const ID = 'duplicate-id';
+    const ACTIONS = [IdentityAction::class];
+}
 
-    const FEATURES = [
-        IdentityFeaturesWithExplicitId::class,
-    ];
+class ParentWithDuplicateId extends Feature
+{
+    const ID = 'duplicate-id';
+    const STACK = 'test';
+    const FEATURES = [ChildWithDuplicateId::class];
 }

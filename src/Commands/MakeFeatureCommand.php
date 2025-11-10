@@ -39,20 +39,19 @@ class MakeFeatureCommand extends GeneratorCommand
     protected function getIdFromClassName($name)
     {
         $className = class_basename($name);
-        $className = str_replace('Feature', '', $className);
-        
+
         // Get the namespace parts after Features
         $parts = explode('\\', str_replace($this->rootNamespace().'Features\\', '', $name));
         array_pop($parts); // Remove the class name
-        
+
         // Convert namespace parts to kebab case
         $parts = array_map(function ($part) {
             return strtolower(preg_replace('/(?<!^)[A-Z]/', '-$0', $part));
         }, $parts);
-        
+
         // Add the class name in kebab case
         $parts[] = strtolower(preg_replace('/(?<!^)[A-Z]/', '-$0', $className));
-        
+
         return implode('-', $parts);
     }
 

@@ -88,7 +88,7 @@ class MakeCommandsTest extends TestCase
         
         $content = File::get($expectedPath);
         $this->assertStringContainsString('class TestFeature extends Feature', $content);
-        $this->assertStringContainsString("const ID = 'test'", $content);
+        $this->assertStringContainsString("const ID = 'test-feature'", $content);
         $this->assertStringContainsString("const STACK = null", $content);
     }
 
