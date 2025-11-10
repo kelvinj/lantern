@@ -1,0 +1,40 @@
+<?php
+
+namespace {{ namespace }};
+
+use Lantern\Features\Action;
+use Lantern\Features\ActionResponse;
+
+class {{ class }} extends Action
+{
+    /**
+     * Used to identify the action
+     */
+    const ID = '{{ id }}';
+
+    /**
+     * Used to flag if your action is performed for guest users
+     */
+    const GUEST_USERS = false;
+
+    /**
+     * Perform the main task of the action
+     *
+     * @return \Lantern\Features\ActionResponse
+     */
+    public function perform(): ActionResponse
+    {
+        // Implement your action logic here
+        return $this->success();
+    }
+
+    /**
+     * Optional: Prepare data before the action is performed
+     *
+     * @return \Lantern\Features\ActionResponse
+     */
+    public function prepare(): ActionResponse
+    {
+        return $this->success();
+    }
+}
