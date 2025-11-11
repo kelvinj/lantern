@@ -3,10 +3,23 @@
 namespace LanternTest;
 
 use Lantern\Features\FeatureRegistry;
-use Lantern\ServiceProvider;
+use Lantern\LanternServiceProvider;
 
 class TestCase extends \Orchestra\Testbench\TestCase
 {
+    /**
+     * Get package providers.
+     *
+     * @param  \Illuminate\Foundation\Application  $app
+     * @return array<int, class-string>
+     */
+    protected function getPackageProviders($app)
+    {
+        return [
+            LanternServiceProvider::class,
+        ];
+    }
+
     /**
      * Define environment setup.
      *
@@ -25,5 +38,4 @@ class TestCase extends \Orchestra\Testbench\TestCase
             'prefix'   => '',
         ]);
     }
-
 }

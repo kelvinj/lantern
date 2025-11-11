@@ -1,0 +1,51 @@
+<?php
+
+namespace {{ namespace }};
+
+use Lantern\Features\Feature;
+
+class {{ class }} extends Feature
+{
+    /**
+     * Used to identify the feature
+     *
+     * @var string|null
+     */
+    const ID = '{{ id }}';
+
+    /**
+     * Optional stack for grouping actions
+     *
+     * @var string|null
+     */
+    const STACK = {{ stack }};
+
+    /**
+     * Feature description
+     *
+     * @var string|null
+     */
+    const DESCRIPTION = 'Description of {{ class }}';
+
+    /**
+     * Array of actions that this feature provides
+     *
+     * @var array<class-string>
+     */
+    const ACTIONS = [
+        // Add your action classes here
+        // Example:
+        // \App\Features\SomeAction::class,
+    ];
+
+    /**
+     * Array of sub-features that this feature provides
+     *
+     * @var array<class-string>
+     */
+    const FEATURES = [
+        // Add your sub-feature classes here
+        // Example:
+        // \App\Features\SomeFeature::class,
+    ];
+}

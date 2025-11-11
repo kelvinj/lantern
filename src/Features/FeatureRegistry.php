@@ -112,7 +112,7 @@ class FeatureRegistry
     {
         $featureId = $feature::id();
 
-        if (array_key_exists($featureId, static::$features)) {
+        if (data_get(static::$features, "$stack.$featureId")) {
             throw LanternException::featureAlreadyDeclared($featureId);
         }
 

@@ -56,7 +56,6 @@ class AvailabilityBuilder
     public function userCannot($ability, $arguments = []): self
     {
         $this->checks[] = function () use ($ability, $arguments): Response {
-            return $this->user->cannot($ability, $arguments);
             if ($this->user->cannot($ability, $arguments)) {
                 return Response::allow();
             }

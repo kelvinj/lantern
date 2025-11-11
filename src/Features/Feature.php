@@ -48,12 +48,6 @@ abstract class Feature
 
         $shortClass = collect(explode('\\', static::class))->last();
 
-        if (Str::endsWith($shortClass, 'Feature')) {
-            $shortClass = Str::replaceLast('Feature', '', $shortClass);
-        } elseif (Str::endsWith($shortClass, 'Features')) {
-            $shortClass = Str::replaceLast('Features', '', $shortClass);
-        }
-
         return Str::snake($shortClass, '-');
     }
 
