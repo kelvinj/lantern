@@ -24,7 +24,7 @@ class ConstraintsBuilderTest extends TestCase
     #[Test]
     public function executableIsInstalledTest()
     {
-        $constraint = new ExecutableIsInstalled('phpunit');
+        $constraint = new ExecutableIsInstalled('bash');
         $this->assertTrue($constraint->isMet());
 
         $constraint = new ExecutableIsInstalled('some_random_binary_that_surely_wont_exist_for_lantern_testing');
@@ -52,7 +52,7 @@ class ConstraintsBuilderTest extends TestCase
         $builder->extensionIsLoaded($firstExtension);
         $builder->extensionIsLoaded($secondExtension);
         $builder->classExists(static::class);
-        $builder->executableIsInstalled('phpunit');
+        $builder->executableIsInstalled('bash');
 
         $this->assertTrue($builder->constraintsMet());
     }

@@ -113,9 +113,7 @@ class ActionProxy
             $check = $check ? Response::allow() : Response::deny();
         }
 
-        $this->available = $check;
-
-        return $this->available->allowed();
+        return $check->allowed();
     }
 
     protected function getUser($user = null)

@@ -18,12 +18,12 @@ class Lantern
     protected static $customAvailabilityBuilder = null;
 
     /**
-     * @param array|null $dirs
+     * @param array $dirs
      * @return array
      */
-    public static function pathDirs(array $dirs = null): array
+    public static function pathDirs(array $dirs = []): array
     {
-        if (is_array($dirs)) {
+        if (is_array($dirs) && !empty($dirs)) {
             return static::$pathDirs = $dirs;
         }
 
